@@ -1,0 +1,1 @@
+{"name":"orders-app","dependencies":{"@angular/material":"19.2.1","rxjs":"~7.8.0","workspace-lib":"workspace:*"}}

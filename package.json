@@ -1,0 +1,61 @@
+{
+  "name": "mfe-guard",
+  "version": "0.1.0",
+  "description": "Catch Module Federation shared-dependency conflicts (singleton version mismatches, duplicate remote names) before they crash your micro-frontends in production.",
+  "type": "module",
+  "bin": {
+    "mfe-guard": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "test": "npm run build && node --test test/check.test.mjs test/cli.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "module-federation",
+    "micro-frontends",
+    "mfe",
+    "webpack",
+    "rspack",
+    "nx",
+    "angular",
+    "singleton",
+    "shared-dependencies",
+    "ci",
+    "lint"
+  ],
+  "author": "Aneeq Rehman",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maneeq/mfe-guard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maneeq/mfe-guard/issues"
+  },
+  "homepage": "https://github.com/maneeq/mfe-guard#readme",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "dependencies": {
+    "semver": "^7.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/semver": "^7.5.8",
+    "typescript": "~5.7.2"
+  }
+}

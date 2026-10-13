@@ -1,0 +1,138 @@
+{
+  "id": "inventory",
+  "name": "inventory",
+  "metaData": {
+    "name": "inventory",
+    "type": "app",
+    "globalName": "inventory",
+    "publicPath": "auto",
+    "remoteEntry": {
+      "name": "remoteEntry.js",
+      "path": "",
+      "type": "global"
+    }
+  },
+  "shared": [
+    {
+      "id": "x:@angular/core",
+      "name": "@angular/core",
+      "version": "19.2.14",
+      "singleton": true,
+      "requiredVersion": "~19.2.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/common",
+      "name": "@angular/common",
+      "version": "19.2.14",
+      "singleton": true,
+      "requiredVersion": "~19.2.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:rxjs",
+      "name": "rxjs",
+      "version": "7.8.2",
+      "singleton": false,
+      "requiredVersion": "~7.8.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/material",
+      "name": "@angular/material",
+      "version": "19.2.3",
+      "singleton": true,
+      "requiredVersion": "^19.2.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/material/autocomplete",
+      "name": "@angular/material/autocomplete",
+      "version": "19.2.3",
+      "singleton": true,
+      "requiredVersion": "^19.2.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@acme/ui-kit",
+      "name": "@acme/ui-kit",
+      "version": "2.16.0",
+      "singleton": true,
+      "requiredVersion": "2.16.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@acme/core",
+      "name": "@acme/core",
+      "version": "1.2.1",
+      "singleton": true,
+      "requiredVersion": "1.2.1",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    }
+  ],
+  "remotes": [],
+  "exposes": []
+}

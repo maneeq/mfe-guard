@@ -1,0 +1,189 @@
+{
+  "id": "orders",
+  "name": "orders",
+  "metaData": {
+    "name": "orders",
+    "type": "app",
+    "globalName": "orders",
+    "publicPath": "auto",
+    "remoteEntry": {
+      "name": "remoteEntry.js",
+      "path": "",
+      "type": "global"
+    }
+  },
+  "shared": [
+    {
+      "id": "x:@angular/core",
+      "name": "@angular/core",
+      "version": "19.2.14",
+      "singleton": true,
+      "requiredVersion": "~19.2.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/common",
+      "name": "@angular/common",
+      "version": "19.2.14",
+      "singleton": true,
+      "requiredVersion": "~19.2.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/common/http",
+      "name": "@angular/common/http",
+      "version": "19.2.14",
+      "singleton": true,
+      "requiredVersion": "~19.2.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:rxjs",
+      "name": "rxjs",
+      "version": "7.8.2",
+      "singleton": true,
+      "requiredVersion": "~7.8.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/material",
+      "name": "@angular/material",
+      "version": "19.2.1",
+      "singleton": true,
+      "requiredVersion": "^19.2.1",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/material/autocomplete",
+      "name": "@angular/material/autocomplete",
+      "version": "19.2.1",
+      "singleton": true,
+      "requiredVersion": "^19.2.1",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@angular/material/button",
+      "name": "@angular/material/button",
+      "version": "19.2.1",
+      "singleton": true,
+      "requiredVersion": "^19.2.1",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@acme/ui-kit",
+      "name": "@acme/ui-kit",
+      "version": "2.13.1",
+      "singleton": true,
+      "requiredVersion": "^2.13.1",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:@acme/core",
+      "name": "@acme/core",
+      "version": "1.1.0",
+      "singleton": true,
+      "requiredVersion": "^1.1.0",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    },
+    {
+      "id": "x:leaflet",
+      "name": "leaflet",
+      "version": "1.9.4",
+      "singleton": true,
+      "requiredVersion": "^1.9.4",
+      "assets": {
+        "js": {
+          "sync": [],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    }
+  ],
+  "remotes": [],
+  "exposes": []
+}
