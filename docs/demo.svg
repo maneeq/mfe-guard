@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="856" height="528" viewBox="0 0 856 528" role="img" aria-label="mfe-guard check output: one singleton-unsatisfied error with a suggested fix">
+<rect width="856" height="528" rx="10" fill="#0d1117"/>
+<circle cx="22" cy="20" r="6" fill="#ff5f56"/><circle cx="42" cy="20" r="6" fill="#ffbd2e"/><circle cx="62" cy="20" r="6" fill="#27c93f"/>
+<text x="428.0" y="24" fill="#8b949e" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" text-anchor="middle">terminal</text>
+<g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" xml:space="preserve">
+<text x="20" y="52" xml:space="preserve" style="white-space:pre"><tspan fill="#69db7c" font-weight="700">$ npx mfe-guard check -m shell=… -m orders=… -m inventory=…</tspan></text>
+<text x="20" y="92" xml:space="preserve" style="white-space:pre"><tspan fill="#e6e6e6" font-weight="700">mfe-guard v0.1.1</tspan><tspan fill="#8b949e"> — 3 participants, 7 shared packages compared</tspan></text>
+<text x="20" y="112" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">  • shell (manifest, 5 shared) ← dist/shell/mf-manifest.json</tspan></text>
+<text x="20" y="132" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">  • orders (manifest, 7 shared) ← dist/orders/mf-manifest.json</tspan></text>
+<text x="20" y="152" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">  • inventory (manifest, 7 shared) ← dist/inventory/mf-manifest.json</tspan></text>
+<text x="20" y="192" xml:space="preserve" style="white-space:pre"><tspan fill="#ff6b6b">✖ error</tspan><tspan fill="#e6e6e6"> </tspan><tspan fill="#8b949e">singleton-unsatisfied</tspan><tspan fill="#e6e6e6"> </tspan><tspan fill="#e6e6e6" font-weight="700">@angular/material</tspan><tspan fill="#8b949e"> (3 entry points)</tspan></text>
+<text x="20" y="212" xml:space="preserve" style="white-space:pre"><tspan fill="#e6e6e6">    @angular/material singleton resolves to 19.2.3, which does not satisfy orders</tspan></text>
+<text x="20" y="232" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">      inventory provides 19.2.3 → wins as singleton (highest version)</tspan></text>
+<text x="20" y="252" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">      orders requires &quot;19.2.1&quot; ✗</tspan></text>
+<text x="20" y="272" xml:space="preserve" style="white-space:pre"><tspan fill="#e6e6e6">    </tspan><tspan fill="#69db7c">fix:</tspan><tspan fill="#e6e6e6"> in orders: change @angular/material &quot;19.2.1&quot; → &quot;^19.2.1&quot; (or align both on 19.2.3)</tspan></text>
+<text x="20" y="312" xml:space="preserve" style="white-space:pre"><tspan fill="#66d9e8">ℹ info </tspan><tspan fill="#e6e6e6"> </tspan><tspan fill="#8b949e">version-drift</tspan><tspan fill="#e6e6e6"> </tspan><tspan fill="#e6e6e6" font-weight="700">@acme/ui-kit</tspan></text>
+<text x="20" y="332" xml:space="preserve" style="white-space:pre"><tspan fill="#e6e6e6">    @acme/ui-kit versions differ (2.13.1, 2.17.1); singleton resolves to 2.17.1</tspan></text>
+<text x="20" y="352" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">      orders ships 2.13.1</tspan></text>
+<text x="20" y="372" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">      inventory ships 2.17.1</tspan></text>
+<text x="20" y="392" xml:space="preserve" style="white-space:pre"><tspan fill="#e6e6e6">    </tspan><tspan fill="#69db7c">note:</tspan><tspan fill="#e6e6e6"> orders will run on @acme/ui-kit@2.17.1 at runtime — test against it or align on 2.17.1</tspan></text>
+<text x="20" y="432" xml:space="preserve" style="white-space:pre"><tspan fill="#66d9e8">ℹ info </tspan><tspan fill="#e6e6e6"> </tspan><tspan fill="#8b949e">version-drift</tspan><tspan fill="#e6e6e6"> 5 packages differ by patch version only </tspan><tspan fill="#8b949e">(--verbose to list)</tspan></text>
+<text x="20" y="452" xml:space="preserve" style="white-space:pre"><tspan fill="#8b949e">      @angular/common, @angular/core, @angular/forms, @angular/router, rxjs</tspan></text>
+<text x="20" y="492" xml:space="preserve" style="white-space:pre"><tspan fill="#ff6b6b">1 error</tspan><tspan fill="#e6e6e6">, 0 warnings, 6 infos</tspan></text>
+</g></svg>

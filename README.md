@@ -1,5 +1,10 @@
 # mfe-guard
 
+[![npm](https://img.shields.io/npm/v/mfe-guard)](https://www.npmjs.com/package/mfe-guard)
+[![downloads](https://img.shields.io/npm/dw/mfe-guard)](https://www.npmjs.com/package/mfe-guard)
+[![CI](https://github.com/maneeq/mfe-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/maneeq/mfe-guard/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/mfe-guard)](https://github.com/maneeq/mfe-guard/blob/main/LICENSE)
+
 **Catch Module Federation shared-dependency conflicts before they crash your micro-frontends in production.**
 
 You deploy a new remote. Everything builds. Then an older remote dies in the browser with:
@@ -13,13 +18,7 @@ module @angular/material/autocomplete does not satisfy the requirement of orders
 
 `mfe-guard` reads the `mf-manifest.json` of every shell and remote, works out which version of each shared singleton will **actually win at runtime**, and fails CI when any participant will not accept it, with the exact fix.
 
-```
-✖ error singleton-unsatisfied @angular/material (3 entry points)
-    @angular/material singleton resolves to 19.2.3, which does not satisfy orders
-      inventory provides 19.2.3 → wins as singleton (highest version)
-      orders requires "19.2.1" ✗
-    fix: in orders: change @angular/material "19.2.1" → "^19.2.1" (or align both on 19.2.3)
-```
+![mfe-guard check output: one singleton-unsatisfied error with the exact fix](https://raw.githubusercontent.com/maneeq/mfe-guard/main/docs/demo.svg)
 
 ## Install
 
@@ -121,6 +120,10 @@ console.log(result.summary); // { error: 2, warn: 3, info: 1 }
 ## How resolution is modelled
 
 For a singleton, the Module Federation runtime picks the **highest** version offered by any loaded participant (default `shareStrategy`). mfe-guard assumes every listed participant is loaded together, which is the worst case and therefore the one worth guarding against in CI.
+
+## How it differs from config linters
+
+Tools like [mf-doctor](https://www.npmjs.com/package/mf-doctor) parse your bundler config files inside one workspace. mfe-guard reads the `mf-manifest.json` each remote actually deployed, so it works across separate repos and teams without their source, and it models which singleton version wins at runtime. They complement each other: lint configs in each repo, guard the deployed combination in CI.
 
 ## Roadmap
 
