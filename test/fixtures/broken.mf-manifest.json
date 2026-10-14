@@ -1,0 +1,6 @@
+{
+  "name": "broken",
+  "shared": [
+    { "name": "rxjs" "version": "7.8.1" }
+  ]
+}

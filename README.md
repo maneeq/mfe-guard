@@ -24,7 +24,7 @@ module @angular/material/autocomplete does not satisfy the requirement of orders
 ## Install
 
 ```bash
-npx mfe-guard check --help        # no install needed
+npx -y mfe-guard check --help     # no install needed
 npm i -D mfe-guard                # or as a dev dependency
 ```
 
@@ -82,7 +82,7 @@ CLI flags are merged on top of the config.
 | `duplicate-name` | error | Two participants share a federation `name` or global/chunk name, so they overwrite each other's modules. |
 | `exact-pin` | warn | A singleton is required as an exact version (`"19.2.1"`), so any patch bump elsewhere breaks it. |
 | `not-singleton` | warn | Framework packages (`@angular/core`, `rxjs`, `zone.js`, `react`, …) shared without `singleton: true`. |
-| `version-drift` | info | Versions differ but are still compatible; shown so you know what will run. |
+| `version-drift` | info | Versions differ but are still compatible. Minor drift is listed with a note on what will actually run; patch-only drift is folded into one line (`--verbose` lists it). |
 
 Secondary entry points (`@angular/material/autocomplete`, `@angular/common/http`, …) are collapsed into their root package, so you get one finding instead of forty.
 
@@ -104,7 +104,7 @@ jobs:
       - run: npx mfe-guard check   # reads mfe-guard.config.json
 ```
 
-Exit codes: `0` ok · `1` findings at or above `--fail-on` (default `error`) · `2` usage or load error. Use `--json` for machine-readable output.
+Exit codes: `0` ok · `1` findings at or above `--fail-on` (default `error`) · `2` usage or load error. Use `--json` for machine-readable output (always includes every finding) and `--verbose` to list patch-only drift in the text report.
 
 ## Programmatic API
 

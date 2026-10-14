@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import semver from 'semver';
 import { join } from 'node:path';
-import { cleanVersion, isRange, matchesPattern } from '../util.js';
+import { cleanVersion, isRange, matchesPattern, parseJson } from '../util.js';
 import type { Participant, SharedEntry } from '../types.js';
 
 /** Packages assumed to be shared singletons in project mode unless configured otherwise. */
@@ -25,7 +25,7 @@ export interface ProjectOptions {
 
 async function readJson(path: string): Promise<any | undefined> {
   try {
-    return JSON.parse(await readFile(path, 'utf8'));
+    return parseJson(await readFile(path, 'utf8'), path);
   } catch {
     return undefined;
   }

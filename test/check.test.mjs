@@ -65,3 +65,21 @@ test('project mode reads package.json + node_modules', async () => {
 test('rejects a remoteEntry-like payload with a helpful message', () => {
   assert.throws(() => parseManifest({ name: 'x' }, 'remoteEntry.js'), /mf-manifest\.json/);
 });
+
+test('accepts a manifest saved with a UTF-8 BOM and CRLF (Windows Notepad)', async () => {
+  const p = await loadManifest(fx('inventory-bom.mf-manifest.json'));
+  assert.equal(p.name, 'inventory');
+  assert.ok(p.shared.length > 0);
+});
+
+test('broken JSON reports line and column', async () => {
+  await assert.rejects(loadManifest(fx('broken.mf-manifest.json')), /invalid JSON: .*line 4/);
+});
+
+test('version-drift is tagged patch or minor', async () => {
+  const r = check([await loadManifest(fx('orders-fixed.mf-manifest.json')), await loadManifest(fx('inventory-fixed.mf-manifest.json'))]);
+  assert.equal(byRule(r, 'version-drift', '@angular/material')[0].drift, 'patch');
+  const minor = byRule(r, 'version-drift', '@acme/ui-kit')[0];
+  assert.equal(minor.drift, 'minor');
+  assert.match(minor.fix, /orders will run on @acme\/ui-kit@2\.16\.0/);
+});

@@ -31,3 +31,13 @@ test('usage errors exit 2', () => {
   assert.equal(run('check', '-m', 'oops').status, 2);
   assert.equal(run('check', '-m', 'a=/nope.json', '-m', 'b=/nope2.json').status, 2);
 });
+
+test('patch-only drift is collapsed unless --verbose', () => {
+  const args = ['check', '-m', `orders=${fx('orders-fixed.mf-manifest.json')}`, '-m', `inventory=${fx('inventory-fixed.mf-manifest.json')}`];
+  const short = run(...args);
+  assert.match(short.stdout, /1 package differs by patch version only/);
+  assert.doesNotMatch(short.stdout, /version-drift @angular\/material/);
+  assert.match(short.stdout, /version-drift @acme\/ui-kit/, 'minor drift is still listed');
+  const long = run(...args, '--verbose');
+  assert.match(long.stdout, /version-drift @angular\/material/);
+});

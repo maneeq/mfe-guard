@@ -24,6 +24,7 @@ Options
       --singletons <a,b,...>       project mode: packages treated as singletons ("*" = Nx default)
       --ignore <rule|pkg|rule:pkg,...>
       --fail-on <error|warn|never> exit 1 at this severity (default: error)
+      --verbose                    list every finding, including patch-only version drift
       --json                       machine-readable output
   -h, --help
   -v, --version
@@ -59,6 +60,7 @@ async function main(argv: string[]): Promise<number> {
       ignore: { type: 'string' },
       'fail-on': { type: 'string' },
       json: { type: 'boolean' },
+      verbose: { type: 'boolean' },
       help: { type: 'boolean', short: 'h' },
       version: { type: 'boolean', short: 'v' },
     },
@@ -108,7 +110,7 @@ async function main(argv: string[]): Promise<number> {
     criticalSingletons: config.criticalSingletons,
   });
 
-  console.log(values.json ? formatJson(result, VERSION) : formatText(result, VERSION));
+  console.log(values.json ? formatJson(result, VERSION) : formatText(result, VERSION, { verbose: values.verbose }));
 
   if (failOn === 'never') return 0;
   if (result.summary.error > 0) return 1;

@@ -7,6 +7,29 @@ export function rootPackage(name: string): string {
   return name.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
 }
 
+/**
+ * JSON.parse that tolerates a UTF-8 byte-order mark (Windows Notepad adds one)
+ * and reports where the JSON is broken.
+ */
+export function parseJson(text: string, source: string): unknown {
+  const clean = text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
+  try {
+    return JSON.parse(clean);
+  } catch (e) {
+    const msg = (e as Error).message;
+    const pos = /position (\d+)/.exec(msg);
+    let where = '';
+    if (pos && !/line \d+/.test(msg)) {
+      const before = clean.slice(0, Number(pos[1]));
+      const line = before.split('\n').length;
+      const col = Number(pos[1]) - before.lastIndexOf('\n');
+      where = ` (line ${line}, column ${col})`;
+    }
+    const hint = /^\s*</.test(clean) ? ' — got HTML, check the URL points at mf-manifest.json' : '';
+    throw new Error(`${source}: invalid JSON: ${msg}${where}${hint}`);
+  }
+}
+
 /** Clean a version string into valid semver, or undefined. */
 export function cleanVersion(v: string | undefined): string | undefined {
   if (!v) return undefined;

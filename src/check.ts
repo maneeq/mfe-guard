@@ -147,13 +147,20 @@ export function check(input: Participant[], opts: CheckOptions = {}): CheckResul
     } else {
       const distinct = [...new Set(providers.map((u) => u.e.version!))];
       if (distinct.length > 1) {
+        const drift = new Set(distinct.map((v) => semver.minor(v))).size > 1 ? 'minor' : 'patch';
+        const behind = providers.filter((u) => u.e.version !== winVer).map((u) => u.p.name);
         add({
           rule: 'version-drift',
           severity: 'info',
           package: pkg,
           entryPoints,
+          drift,
           message: `${pkg} versions differ (${distinct.join(', ')}); singleton resolves to ${winVer}`,
           details: providers.map((u) => `${u.p.name} ships ${versionLabel(u)}`),
+          fix:
+            drift === 'minor'
+              ? `${behind.join(', ')} will run on ${pkg}@${winVer} at runtime — test against it or align on ${winVer}`
+              : undefined,
           participants: names,
         });
       }

@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { dirname, isAbsolute, resolve } from 'node:path';
+import { parseJson } from './util.js';
 
 export type FailOn = 'error' | 'warn' | 'never';
 
@@ -25,12 +26,13 @@ export const DEFAULT_CONFIG_FILE = 'mfe-guard.config.json';
 /** Load a JSON config; relative project/manifest paths resolve against the config file. */
 export async function loadConfig(path: string): Promise<MfeGuardConfig> {
   const abs = resolve(path);
-  let raw: any;
+  let text: string;
   try {
-    raw = JSON.parse(await readFile(abs, 'utf8'));
+    text = await readFile(abs, 'utf8');
   } catch (e) {
     throw new Error(`cannot read config ${path}: ${(e as Error).message}`);
   }
+  const raw: any = parseJson(text, path);
   if (!Array.isArray(raw.participants)) {
     throw new Error(`${path}: "participants" must be an array`);
   }

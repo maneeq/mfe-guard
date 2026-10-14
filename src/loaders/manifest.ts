@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import type { Participant, SharedEntry } from '../types.js';
+import { parseJson } from '../util.js';
 
 /**
  * Parse an `mf-manifest.json` (or `mf-stats.json`) produced by
@@ -50,11 +51,5 @@ export async function loadManifest(source: string, label?: string): Promise<Part
   } else {
     text = await readFile(source, 'utf8');
   }
-  let json: unknown;
-  try {
-    json = JSON.parse(text);
-  } catch {
-    throw new Error(`${source}: response is not valid JSON`);
-  }
-  return parseManifest(json, source, label);
+  return parseManifest(parseJson(text, source), source, label);
 }

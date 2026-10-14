@@ -1,6 +1,6 @@
 {
   "name": "mfe-guard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Catch Module Federation shared-dependency conflicts (singleton version mismatches, duplicate remote names) before they crash your micro-frontends in production.",
   "type": "module",
   "bin": {
@@ -17,7 +17,8 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.json",

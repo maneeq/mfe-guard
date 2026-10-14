@@ -14,7 +14,12 @@ const COLOR: Record<Severity, (s: string) => string> = { error: red, warn: yello
 
 const plural = (n: number, w: string) => `${n} ${w}${n === 1 ? '' : 's'}`;
 
-export function formatText(result: CheckResult, version: string): string {
+export interface TextOptions {
+  /** Show every finding, including patch-only version drift. */
+  verbose?: boolean;
+}
+
+export function formatText(result: CheckResult, version: string, opts: TextOptions = {}): string {
   const out: string[] = [];
   out.push(
     bold(`mfe-guard v${version}`) +
@@ -30,13 +35,25 @@ export function formatText(result: CheckResult, version: string): string {
     return out.join('\n');
   }
 
-  for (const f of result.findings) {
+  const isPatchDrift = (f: CheckResult['findings'][number]) => f.rule === 'version-drift' && f.drift === 'patch';
+  const collapsed = opts.verbose ? [] : result.findings.filter(isPatchDrift);
+  const shown = opts.verbose ? result.findings : result.findings.filter((f) => !isPatchDrift(f));
+
+  for (const f of shown) {
     const c = COLOR[f.severity];
     const pkg = f.package ? ` ${bold(f.package)}${f.entryPoints && f.entryPoints > 1 ? dim(` (${f.entryPoints} entry points)`) : ''}` : '';
     out.push(`${c(`${ICON[f.severity]} ${f.severity.padEnd(5)}`)} ${dim(f.rule)}${pkg}`);
     out.push(`    ${f.message}`);
     for (const d of f.details) out.push(dim(`      ${d}`));
-    if (f.fix) out.push(`    ${green('fix:')} ${f.fix}`);
+    if (f.fix) out.push(`    ${green(f.severity === 'info' ? 'note:' : 'fix:')} ${f.fix}`);
+    out.push('');
+  }
+
+  if (collapsed.length) {
+    out.push(
+      `${cyan(`${ICON.info} info `)} ${dim('version-drift')} ${plural(collapsed.length, 'package')} ${collapsed.length === 1 ? 'differs' : 'differ'} by patch version only ${dim('(--verbose to list)')}`,
+    );
+    out.push(dim(`      ${collapsed.map((f) => f.package).join(', ')}`));
     out.push('');
   }
 

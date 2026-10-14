@@ -50,6 +50,8 @@ export interface Finding {
   details: string[];
   fix?: string;
   participants: string[];
+  /** version-drift only: "patch" when only patch versions differ, "minor" otherwise. */
+  drift?: 'patch' | 'minor';
 }
 
 export interface CheckOptions {
