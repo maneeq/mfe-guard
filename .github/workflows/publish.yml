@@ -17,6 +17,8 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # The "npm" environment holds NPM_TOKEN and requires a reviewer's approval before this job runs.
+    environment: npm
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
