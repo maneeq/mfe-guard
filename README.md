@@ -46,10 +46,17 @@ Local paths work too (`-m orders=./dist/orders/mf-manifest.json`), and so do `mf
 
 ### Project mode (no build needed)
 
-Compare project folders directly. The required range comes from `package.json`, and the shipped version comes from `node_modules` when installed:
+Compare project folders directly. The required range comes from `package.json`. The shipped version comes from `pnpm-lock.yaml` when the project uses pnpm, otherwise from `node_modules` when installed:
 
 ```bash
 npx mfe-guard check -p orders=../orders-app -p inventory=../inventory-app --singletons "*"
+```
+
+**pnpm:** no install needed. mfe-guard finds `pnpm-lock.yaml` in the project folder or any parent (monorepo root), reads the exact resolved version for that project, and resolves `catalog:` / `catalog:<name>` specifiers from `pnpm-workspace.yaml`. When a conflicting range comes from a catalog, the fix tells you to change it there. Lockfile v6 and v9 (pnpm 8–10) are supported.
+
+```bash
+# pnpm monorepo: point at each app folder
+npx mfe-guard check -p shell=apps/shell -p orders=apps/orders -p inventory=apps/inventory --singletons "*"
 ```
 
 By default only well-known singletons (`@angular/*`, `rxjs`, `zone.js`, `primeng`, `@primeng/*`, `@ngrx/*`, `@ngxs/*`, `react`, `react-dom`, `vue`) are compared. **Nx shares every dependency as a singleton**, so pass `--singletons "*"` there.
@@ -127,7 +134,7 @@ Tools like [mf-doctor](https://www.npmjs.com/package/mf-doctor) parse your bundl
 
 ## Roadmap
 
-- Lockfile parsing (pnpm / npm / yarn) for exact versions without `node_modules`
+- npm (`package-lock.json`) and yarn lockfile parsing
 - Nx executor and a ready-made GitHub Action
 - HTML report
 - Classic webpack `remoteEntry.js` (no manifest) support

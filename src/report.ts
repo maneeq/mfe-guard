@@ -27,6 +27,7 @@ export function formatText(result: CheckResult, version: string, opts: TextOptio
   );
   for (const p of result.participants) {
     out.push(dim(`  • ${p.name} (${p.kind}, ${p.shared.length} shared) ← ${p.source}`));
+    for (const n of p.notes ?? []) out.push(dim(`      ${n}`));
   }
   out.push('');
 
@@ -73,7 +74,7 @@ export function formatJson(result: CheckResult, version: string): string {
     {
       tool: 'mfe-guard',
       version,
-      participants: result.participants.map((p) => ({ name: p.name, kind: p.kind, source: p.source, shared: p.shared.length })),
+      participants: result.participants.map((p) => ({ name: p.name, kind: p.kind, source: p.source, shared: p.shared.length, notes: p.notes })),
       packagesCompared: result.packagesCompared,
       summary: result.summary,
       findings: result.findings,

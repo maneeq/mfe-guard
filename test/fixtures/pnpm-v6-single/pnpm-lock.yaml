@@ -1,0 +1,9 @@
+lockfileVersion: '6.0'
+
+dependencies:
+  primeng:
+    specifier: ^19.1.0
+    version: 19.1.4(@angular/core@19.2.14)
+  rxjs:
+    specifier: ~7.8.0
+    version: 7.8.1

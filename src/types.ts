@@ -8,6 +8,8 @@ export interface SharedEntry {
   versionGuessed?: boolean;
   /** Range this participant requires at runtime. `false` = no requirement. */
   requiredVersion?: string | false;
+  /** Where the required range is declared when it is not the project's own package.json (e.g. a pnpm catalog). */
+  rangeSource?: string;
   singleton: boolean;
   strictVersion?: boolean;
   eager?: boolean;
@@ -28,6 +30,8 @@ export interface Participant {
   /** "manifest" = exact data from mf-manifest.json, "project" = heuristic from package.json. */
   kind: 'manifest' | 'project';
   shared: SharedEntry[];
+  /** Short notes shown under the participant in reports (e.g. which lockfile was read). */
+  notes?: string[];
 }
 
 export type Severity = 'error' | 'warn' | 'info';

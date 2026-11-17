@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import semver from 'semver';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { cleanVersion, isRange, matchesPattern, parseJson } from '../util.js';
+import { loadPnpm } from './pnpm.js';
 import type { Participant, SharedEntry } from '../types.js';
 
 /** Packages assumed to be shared singletons in project mode unless configured otherwise. */
@@ -32,28 +33,52 @@ async function readJson(path: string): Promise<any | undefined> {
 }
 
 /**
- * Build a participant from a project folder: package.json gives the required range,
- * node_modules (when installed) gives the version it will actually ship.
+ * Build a participant from a project folder.
+ * - Required range: package.json (pnpm `catalog:` specifiers are resolved from the workspace).
+ * - Shipped version, first match wins: pnpm-lock.yaml → node_modules → lowest version of the range.
  */
 export async function loadProject(dir: string, label: string, opts: ProjectOptions = {}): Promise<Participant> {
   const pkg = await readJson(join(dir, 'package.json'));
   if (!pkg) throw new Error(`${dir}: package.json not found or unreadable`);
   const singletons = opts.singletons ?? DEFAULT_SINGLETONS;
   const deps: Record<string, string> = pkg.dependencies ?? {};
+  const pnpm = await loadPnpm(dir);
 
   const shared: SharedEntry[] = [];
-  for (const [name, range] of Object.entries(deps)) {
+  const unresolved: string[] = [];
+  for (const [name, spec] of Object.entries(deps)) {
     if (!singletons.some((p) => matchesPattern(name, p))) continue;
-    if (!isRange(range)) continue; // workspace:, git urls, file: ...
-    const installed = cleanVersion((await readJson(join(dir, 'node_modules', name, 'package.json')))?.version);
+
+    let range: string | undefined = spec;
+    let rangeSource: string | undefined;
+    if (typeof spec === 'string' && spec.startsWith('catalog:')) {
+      const cname = spec.slice('catalog:'.length).trim();
+      rangeSource = `pnpm-workspace.yaml ${cname ? `catalogs.${cname}` : 'catalog'}`;
+      range = pnpm?.resolveCatalog(name, spec);
+      if (!range) {
+        unresolved.push(`${name} (${spec})`);
+        continue;
+      }
+    }
+    if (!isRange(range)) continue; // workspace:, git urls, file:, link: ...
+
+    const locked = pnpm?.versions.get(name);
+    const installed = locked ? undefined : cleanVersion((await readJson(join(dir, 'node_modules', name, 'package.json')))?.version);
+    const version = locked ?? installed ?? semver.minVersion(range)?.version;
+
     shared.push({
       name,
-      version: installed ?? semver.minVersion(range)?.version,
-      versionGuessed: !installed,
+      version,
+      versionGuessed: !locked && !installed,
       requiredVersion: range,
+      rangeSource,
       singleton: true,
     });
   }
 
-  return { name: label, source: dir, kind: 'project', shared };
+  const notes: string[] = [];
+  if (pnpm) notes.push(`versions from ${basename(pnpm.lockfile)}`);
+  if (unresolved.length) notes.push(`skipped unresolved catalog entries: ${unresolved.join(', ')}`);
+
+  return { name: label, source: dir, kind: 'project', shared, notes };
 }

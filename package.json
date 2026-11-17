@@ -1,6 +1,6 @@
 {
   "name": "mfe-guard",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Catch Module Federation shared-dependency conflicts (singleton version mismatches, duplicate remote names) before they crash your micro-frontends in production.",
   "type": "module",
   "bin": {
@@ -52,7 +52,8 @@
     "node": ">=18.17"
   },
   "dependencies": {
-    "semver": "^7.6.3"
+    "semver": "^7.6.3",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

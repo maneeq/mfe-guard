@@ -41,3 +41,10 @@ test('patch-only drift is collapsed unless --verbose', () => {
   const long = run(...args, '--verbose');
   assert.match(long.stdout, /version-drift @angular\/material/);
 });
+
+test('project mode on a pnpm monorepo', () => {
+  const r = run('check', '-p', `orders=${fx('pnpm-mono/apps/orders')}`, '-p', `inventory=${fx('pnpm-mono/apps/inventory')}`);
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /versions from pnpm-lock\.yaml/);
+  assert.match(r.stdout, /singleton-unsatisfied @angular\/material/);
+});

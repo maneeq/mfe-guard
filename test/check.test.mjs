@@ -83,3 +83,39 @@ test('version-drift is tagged patch or minor', async () => {
   assert.equal(minor.drift, 'minor');
   assert.match(minor.fix, /orders will run on @acme\/ui-kit@2\.16\.0/);
 });
+
+test('pnpm monorepo: versions from pnpm-lock.yaml, catalog: resolved, no node_modules needed', async () => {
+  const orders = await loadProject(fx('pnpm-mono/apps/orders'), 'orders');
+  const inventory = await loadProject(fx('pnpm-mono/apps/inventory'), 'inventory');
+  const mat = orders.shared.find((s) => s.name === '@angular/material');
+  assert.equal(mat.requiredVersion, '19.2.1', 'catalog: resolved from pnpm-workspace.yaml');
+  assert.equal(mat.version, '19.2.1', 'peer suffix stripped from lockfile version');
+  assert.equal(mat.versionGuessed, false);
+  assert.match(orders.notes.join(' '), /pnpm-lock\.yaml/);
+  assert.equal(inventory.shared.some((s) => s.name === 'shared-lib'), false, 'workspace: deps skipped');
+
+  const r = check([orders, inventory]);
+  const [f] = byRule(r, 'singleton-unsatisfied', '@angular/material');
+  assert.ok(f, 'conflict found from lockfile versions');
+  assert.match(f.details[0], /inventory provides 19\.2\.3 →/);
+  assert.doesNotMatch(f.details[0], /guessed/);
+  assert.equal(byRule(r, 'version-drift', '@angular/core')[0].drift, 'patch');
+});
+
+test('pnpm: unknown named catalog is reported, not silently dropped', async () => {
+  const p = await loadProject(fx('pnpm-mono/apps/catalog-missing'), 'x');
+  assert.match(p.notes.join(' '), /skipped unresolved catalog entries: @angular\/core \(catalog:ng19\)/);
+  assert.equal(p.shared.find((s) => s.name === 'rxjs').requiredVersion, '~7.8.0');
+});
+
+test('pnpm lockfile v6 single project (top-level dependencies)', async () => {
+  const p = await loadProject(fx('pnpm-v6-single'), 'v6app');
+  assert.equal(p.shared.find((s) => s.name === 'primeng').version, '19.1.4');
+  assert.equal(p.shared.find((s) => s.name === 'rxjs').version, '7.8.1');
+});
+
+test('fix message points at the pnpm catalog when the range comes from it', async () => {
+  const r = check([await loadProject(fx('pnpm-mono/apps/orders'), 'orders'), await loadProject(fx('pnpm-mono/apps/inventory'), 'inventory')]);
+  const [f] = byRule(r, 'singleton-unsatisfied', '@angular/material');
+  assert.match(f.fix, /\(set in pnpm-workspace\.yaml catalog\)/);
+});

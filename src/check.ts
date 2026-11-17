@@ -21,7 +21,7 @@ interface Use {
 const SEVERITY_ORDER: Record<Severity, number> = { error: 0, warn: 1, info: 2 };
 
 function versionLabel(u: Use): string {
-  return u.e.versionGuessed ? `${u.e.version} (guessed from "${u.e.requiredVersion}" — install deps for the exact version)` : `${u.e.version}`;
+  return u.e.versionGuessed ? `${u.e.version} (guessed from "${u.e.requiredVersion}" — install deps or add a lockfile for the exact version)` : `${u.e.version}`;
 }
 
 /** Run every rule over the given participants. Pure function — no I/O. */
@@ -127,7 +127,8 @@ export function check(input: Participant[], opts: CheckOptions = {}): CheckResul
           return `upgrade ${pkg} in ${winner.p.name} to >= ${lo.version}`;
         }
         if (lo && semver.major(lo) === semver.major(winVer)) {
-          return `in ${u.p.name}: change ${pkg} "${range}" → "^${lo.version}" (or align both on ${winVer})`;
+          const where = u.e.rangeSource ? ` (set in ${u.e.rangeSource})` : '';
+          return `in ${u.p.name}: change ${pkg} "${range}" → "^${lo.version}"${where} (or align both on ${winVer})`;
         }
         return `align ${pkg} versions between ${u.p.name} and ${winner.p.name}`;
       });
@@ -178,7 +179,7 @@ export function check(input: Participant[], opts: CheckOptions = {}): CheckResul
         package: pkg,
         entryPoints,
         message: `${pkg} is pinned to an exact version in ${pinned.map((u) => u.p.name).join(', ')}`,
-        details: pinned.map((u) => `${u.p.name} requires exactly "${u.e.requiredVersion}"`),
+        details: pinned.map((u) => `${u.p.name} requires exactly "${u.e.requiredVersion}"${u.e.rangeSource ? ` (set in ${u.e.rangeSource})` : ''}`),
         fix: `use a caret range (e.g. "^${(pinned[0].e.requiredVersion as string).replace(/^=/, '')}") so a patch bump in another remote does not break it`,
         participants: pinned.map((u) => u.p.name),
       });

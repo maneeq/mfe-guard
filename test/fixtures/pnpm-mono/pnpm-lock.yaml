@@ -1,0 +1,45 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+catalogs:
+  default:
+    '@angular/material':
+      specifier: 19.2.1
+      version: 19.2.1
+    rxjs:
+      specifier: ~7.8.0
+      version: 7.8.2
+
+importers:
+
+  .: {}
+
+  apps/inventory:
+    dependencies:
+      '@angular/core':
+        specifier: ~19.2.0
+        version: 19.2.15(rxjs@7.8.2)(zone.js@0.15.0)
+      '@angular/material':
+        specifier: ^19.2.0
+        version: 19.2.3(@angular/cdk@19.2.3)(@angular/core@19.2.15(rxjs@7.8.2)(zone.js@0.15.0))
+      rxjs:
+        specifier: ~7.8.0
+        version: 7.8.2
+      shared-lib:
+        specifier: workspace:*
+        version: link:../../libs/shared
+
+  apps/orders:
+    dependencies:
+      '@angular/core':
+        specifier: ~19.2.0
+        version: 19.2.14(rxjs@7.8.2)(zone.js@0.15.0)
+      '@angular/material':
+        specifier: 'catalog:'
+        version: 19.2.1(@angular/cdk@19.2.1)(@angular/core@19.2.14(rxjs@7.8.2)(zone.js@0.15.0))
+      rxjs:
+        specifier: 'catalog:'
+        version: 7.8.2

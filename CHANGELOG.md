@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+- pnpm support in project mode: exact versions from `pnpm-lock.yaml` (v6 and v9) without
+  `node_modules`, found in the project folder or any parent, so monorepo apps work.
+- `catalog:` and `catalog:<name>` specifiers are resolved from `pnpm-workspace.yaml`; fixes
+  point at the catalog when the conflicting range lives there; unknown catalogs are reported.
+- `workspace:` / `link:` dependencies are skipped.
+- Reports show which lockfile each project's versions came from.
+
 ## 0.1.1
 
 - Manifests and config files saved with a UTF-8 byte-order mark (Windows Notepad) now load.
